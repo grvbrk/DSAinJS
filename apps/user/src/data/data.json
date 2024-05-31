@@ -1,0 +1,19 @@
+{
+  "_id": 1,
+  "problems": {
+    "problem_id": "1",
+    "problem_title": "sum numbers recursive",
+    "problem_caution": "Watch the Approach video first!",
+    "problem_desc": "Write a function sumNumbersRecursive that takes in an array of numbers and returns the sum of all the numbers in the array. All elements will be integers. Solve this recursively."
+  },
+  "testcases": {
+    "testcase1": "sumNumbersRecursive([5, 2, 9, 10]); // -> 26",
+    "testcase2": "sumNumbersRecursive([1, -1, 1, -1, 1, -1, 1]); // -> 1",
+    "testcase3": "sumNumbersRecursive([]); // -> 0",
+    "testcase4": "sumNumbersRecursive([1000, 0, 0, 0, 0, 0, 1]); // -> 1001",
+    "testcase5": "sumNumbersRecursive([700, 70, 7]); // -> 777",
+    "testcase6": "sumNumbersRecursive([-10, -9, -8, -7, -6, -5, -4, -3, -2, -1]); // -> -55",
+    "testcase7": "sumNumbersRecursive([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); // -> 0",
+    "testcase8": "sumNumbersRecursive([123456789, 12345678, 1234567, 123456, 12345, 1234, 123, 12, 1, 0]); // -> 1836311903"
+  }
+}

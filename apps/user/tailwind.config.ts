@@ -19,7 +19,7 @@ const config = {
     },
     extend: {
       colors: {
-        golden: "#FFD700",
+        golden: "	#bf9b30",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
