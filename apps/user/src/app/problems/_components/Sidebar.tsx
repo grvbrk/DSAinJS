@@ -14,22 +14,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Progress } from "@/components/ui/progress";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { AlignJustify } from "lucide-react";
 
 function Sidebar() {
   return (
     <Sheet>
-      <SheetTrigger className="flex items-center gap-1">
-        <GiHamburgerMenu className="text-golden" />
-        <h1 className="text-golden">Contents</h1>
+      <SheetTrigger className="flex items-center gap-1" asChild>
+        <AlignJustify className="h-6 w-6" />
       </SheetTrigger>
       <SheetContent side="left">
         <SheetTitle className="flex justify-center mb-2">
           Gourav Barik
         </SheetTitle>
         <SheetTitle>Your Progress</SheetTitle>
-        <Progress value={33} />
-        <Accordion type="single" collapsible>
+        <Progress value={33} className="mt-1" />
+        <Accordion type="single" collapsible className="mt-2">
           <AccordionItem value="item-1">
             <AccordionTrigger>Arrays</AccordionTrigger>
             <AccordionContent>

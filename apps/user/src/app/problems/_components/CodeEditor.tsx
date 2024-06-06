@@ -13,16 +13,23 @@ export default function CodeEditor() {
     editor.focus();
   }
 
+  function showValue() {
+    if (editorRef.current) {
+      setValue(editorRef.current.getValue());
+    }
+  }
+
   return (
     <div>
       <Editor
         height="75vh"
         theme="vs-dark"
         defaultLanguage="javascript"
-        defaultValue={value}
+        value={value}
         onChange={(value) => setValue(value!)}
         onMount={handleMount}
       />
+      <h1>{value}</h1>
     </div>
   );
 }
