@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Nav, NavLink } from "@repo/ui/nav";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Nav>
-          <NavLink href="/admin">Dashboard</NavLink>
-          <NavLink href="/admin/products">Products</NavLink>
-          <NavLink href="/admin/users">Customers</NavLink>
-          <NavLink href="/admin/orders">Sales</NavLink>
-        </Nav>
+        <Navbar />
         <div className="container my-6">{children}</div>
       </body>
     </html>
