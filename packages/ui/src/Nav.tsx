@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ComponentProps, ReactNode } from "react";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import "./globals.css";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
