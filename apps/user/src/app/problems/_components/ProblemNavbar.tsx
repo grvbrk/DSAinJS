@@ -13,7 +13,7 @@ import Link from "next/link";
 import { CircleUser, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-export default function Navbar() {
+export default function ProblemNavbar() {
   return (
     <>
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -23,25 +23,18 @@ export default function Navbar() {
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <Sidebar />
-            <span className="sr-only">Acme Inc</span>
           </Link>
           <Link
-            href="#"
+            href="/"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Approaches
+            Dashboard
           </Link>
           <Link
-            href="#"
+            href="/problems"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Solution
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Submissions
+            Problems
           </Link>
         </nav>
         <form className="ml-auto flex-1 sm:flex-initial">

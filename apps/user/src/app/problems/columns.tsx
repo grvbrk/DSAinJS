@@ -1,35 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-export type ProblemType = {
-  problem_id: string;
-  problem_title: string;
-  problem_caution: string;
-  problem_desc: string;
-};
-
-export type Testcase = {
-  testcase_id: string;
-  testcase_desc: string;
-};
-
-export type Problems = {
-  id: string;
-  problem: ProblemType;
-  testcases: Testcase[];
-  status: "pending" | "processing" | "success" | "failed";
-};
+import { ArrowUpDown } from "lucide-react";
+import { ProblemType, Testcase, Problems } from "@repo/common";
 
 export const columns: ColumnDef<Problems>[] = [
   {
@@ -40,7 +13,7 @@ export const columns: ColumnDef<Problems>[] = [
     accessorKey: "problem",
     header: ({ column }) => {
       return (
-        <div className="flex items-center ">
+        <div className="flex items-center">
           <h1 className="cursor-default hover:bg-transparent">Problem</h1>
           <ArrowUpDown
             className="ml-2 h-3 w-3 cursor-pointer"
@@ -58,10 +31,12 @@ export const columns: ColumnDef<Problems>[] = [
   },
   {
     accessorKey: "testcases",
-    header: () => <div className="text-right">Testcase</div>,
+    header: () => <div className="flex justify-center">Testcases</div>,
     cell: (props) => {
       const testcase = props.row.getValue("testcases") as Testcase[];
-      return <div className="text-right font-medium">{testcase.length}</div>;
+      return (
+        <div className="flex justify-center font-medium">{testcase.length}</div>
+      );
     },
   },
 ];

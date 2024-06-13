@@ -1,19 +1,74 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { CircleUser, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function Navbar() {
   return (
-    <nav className="w-full flex items-center justify-between mx-4 px-3">
-      <div className="flex items-center gap-8">
-        <h1 className="font-bold text-golden">DSAinJS</h1>
-        <div className="font-bold text-golden flex items-center gap-8">
-          <Link href="/explore">Explore</Link>
-          <Link href="/problems">Problems</Link>
-        </div>
-      </div>
-      <Button asChild className="font-bold text-black bg-golden">
-        <Link href="/login">Signup</Link>
-      </Button>
-    </nav>
+    <>
+      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-10 md:text-sm lg:gap-16">
+          <Link
+            href="/"
+            className="font-bold transition-colors hover:text-foreground"
+          >
+            DSAinJS
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/problems"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Problems
+          </Link>
+          <Link
+            href="/users"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Users
+          </Link>
+        </nav>
+        <form className="ml-auto flex-1 sm:flex-initial">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search problem..."
+              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+            />
+          </div>
+        </form>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary" size="icon" className="rounded-full">
+              <CircleUser className="h-5 w-5" />
+              <span className="sr-only">Toggle user menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Logout</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </header>
+    </>
   );
 }

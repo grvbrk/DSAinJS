@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ProblemType } from "@repo/common";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,37 +32,34 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  // const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // onSortingChange: setSorting,
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    // state: {
-    //   sorting,
-    // },
+    state: {
+      sorting,
+    },
   });
   const router = useRouter();
 
-  function handleRowClick() {
-    router.push("/problems/1");
+  function handleRowClick(problemId: string) {
+    router.push(`/problems/${problemId}`);
   }
 
-  console.log(
-    table.getRowModel().rows[0].getVisibleCells()[2].column.columnDef.cell
-  );
   return (
     <>
-      <div className="rounded-md border px-4">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="px-4">
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -79,11 +77,19 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={handleRowClick}
                   >
                     {row.getVisibleCells().map((cell) => {
+                      let problemId = "";
+                      if (typeof cell.getValue() === "object") {
+                        const problem = cell.getValue() as ProblemType;
+                        problemId = problem.problem_title?.replaceAll(" ", "-");
+                      }
                       return (
-                        <TableCell key={cell.id}>
+                        <TableCell
+                          key={cell.id}
+                          onClick={() => handleRowClick(problemId as string)}
+                          className={`${cell.column.id === "problem" && "cursor-pointer"} px-4`}
+                        >
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
