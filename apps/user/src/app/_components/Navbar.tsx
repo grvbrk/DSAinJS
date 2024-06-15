@@ -21,7 +21,7 @@ export default function Navbar() {
             href="/"
             className="font-bold transition-colors hover:text-foreground"
           >
-            DSAinJS
+            Async0
           </Link>
           <Link
             href="/dashboard"

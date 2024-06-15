@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Editor from "@monaco-editor/react";
 import { Send } from "lucide-react";
 import { editor } from "monaco-editor";
 import { useRef, useState } from "react";
+import axios from "axios";
 
 type CodeEditorPropsType = {
   placeholderCode: string;
@@ -15,6 +15,9 @@ type CodeEditorPropsType = {
 export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
   const [value, setValue] = useState<string>("");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const [submissions, setSubmissions] = useState<Record<string, []>>({
+    submissions: [],
+  });
 
   function handleMount(editor: editor.IStandaloneCodeEditor) {
     editorRef.current = editor;
@@ -24,6 +27,38 @@ export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
   function showValue() {
     if (editorRef.current) {
       setValue(editorRef.current.getValue());
+    }
+  }
+
+  function getProblem() {}
+  function getProblemTestcases() {
+    const testCases = {};
+  }
+
+  async function handleProblemSubmit() {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_JUDGE0_URL}/submissions/?base64_encoded=false`,
+        {
+          source_code: 'console.log("hello, Judge0")',
+          language_id: "63",
+          stdin: "Judge0",
+          expected_output: "hello, Judge0",
+        }
+      );
+      const token = response.data.token;
+      setTimeout(async () => {
+        try {
+          const res = await axios.get(
+            `${process.env.NEXT_PUBLIC_JUDGE0_URL}/submissions/${token}?base64_encoded=false`
+          );
+          console.log(res);
+        } catch (error) {
+          console.log("Error fetching submission with token", error);
+        }
+      }, 3000);
+    } catch (error) {
+      console.log("Error submitting code", error);
     }
   }
 
@@ -52,10 +87,15 @@ export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
           />
         </Card>
         <div className="flex justify-end gap-2 mt-2">
-          <Button variant="outline" size="lg" className="border border-black">
+          <Button
+            variant="outline"
+            size="lg"
+            className="border border-black"
+            type="submit"
+          >
             Run
           </Button>
-          <Button size="lg">
+          <Button size="lg" type="submit" onClick={handleProblemSubmit}>
             Submit
             <Send className="ml-2" size="14" />
           </Button>

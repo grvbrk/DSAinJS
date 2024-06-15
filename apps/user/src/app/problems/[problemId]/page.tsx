@@ -24,12 +24,17 @@ function getProblemById(problemId: string) {
   return problemsArray[0];
 }
 
+function getProblemTestcases(problemId: string) {
+  return problemsArray[0].testcases;
+}
+
 export default function page({
   params: { problemId },
 }: {
   params: { problemId: string };
 }) {
   const problem = getProblemById(problemId);
+  const testcases = getProblemTestcases(problemId);
 
   return (
     <>
@@ -73,9 +78,13 @@ export default function page({
                     )}
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    {problem.testcases.map((testcase) => {
+                    {testcases.map((testcase) => {
                       return (
-                        <TestCaseBlock testcase={testcase} status="idle" />
+                        <TestCaseBlock
+                          key={testcase.testcase_id}
+                          testcase={testcase}
+                          status={testcase.testcase_status}
+                        />
                       );
                     })}
                   </CardContent>
