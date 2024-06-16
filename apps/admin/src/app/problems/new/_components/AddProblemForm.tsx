@@ -42,12 +42,12 @@ export default function AddProblemForm({ product }: { product?: any }) {
   return (
     <form action={AddProblem} className="space-y-8">
       <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="name">Problem Name</Label>
         <Input type="text" id="name" name="name" required />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">Problem Description</Label>
         <Textarea id="description" name="description" required />
       </div>
 
