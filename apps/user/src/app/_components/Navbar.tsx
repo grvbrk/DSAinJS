@@ -20,10 +20,7 @@ import {
 import Link from "next/link";
 import { CircleUser, LogIn, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import {
-  BuiltInProviderType,
-  RedirectableProviderType,
-} from "next-auth/providers/index";
+import { BuiltInProviderType } from "next-auth/providers/index";
 
 type ProvidersResponse = Record<
   LiteralUnion<BuiltInProviderType, string>,
@@ -64,12 +61,6 @@ export default function Navbar() {
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Problems
-          </Link>
-          <Link
-            href="/users"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Users
           </Link>
         </nav>
         <form className="ml-auto flex-1 sm:flex-initial">

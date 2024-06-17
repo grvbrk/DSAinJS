@@ -1,3 +1,4 @@
+import { addUser, findUser } from "@/app/actions/users";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
@@ -17,19 +18,25 @@ export const authOptions = {
   callbacks: {
     // This callback will be invoked on successful signin by user
     async signIn({ profile }: any) {
-      // 1. Connect DB
-      // 2. Check if user exists
-      // 2.1. If not, add user to DB
-      // 3. Return 'true' to allow sign in
+      const user = await findUser(profile.email);
+
+      if (!user) {
+        await addUser(profile.email);
+      }
+
       return true;
     },
 
     // This callback will modify the session object.
-    async session({ session }: any) {
-      // 1. Get user from DB
-      // 2. Assign the user's id to the session (SO that it is available throughout the app)
-      // 3. Return session
+    async session({ session, token }: any) {
+      const user = await findUser(session.user.email);
+      session.user.id = user?.id;
+      session.user.foo = "bar";
       return session;
     },
+  },
+  pages: {
+    signin: "/problems",
+    error: "/test",
   },
 };
