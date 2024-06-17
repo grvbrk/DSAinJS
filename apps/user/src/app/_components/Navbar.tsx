@@ -21,6 +21,9 @@ import Link from "next/link";
 import { CircleUser, LogIn, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { BuiltInProviderType } from "next-auth/providers/index";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 type ProvidersResponse = Record<
   LiteralUnion<BuiltInProviderType, string>,
@@ -28,6 +31,7 @@ type ProvidersResponse = Record<
 >;
 
 export default function Navbar() {
+  const { toast } = useToast();
   const { data: session } = useSession();
   const [providers, setProviders] = useState<ProvidersResponse | null>(null);
 
@@ -53,13 +57,39 @@ export default function Navbar() {
           <Link
             href="/dashboard"
             className="text-muted-foreground transition-colors hover:text-foreground"
+            onClick={(e) => {
+              if (!session) {
+                toast({
+                  variant: "destructive",
+                  title: "You need to be logged in",
+                  action: (
+                    <ToastAction altText="Try again">Try again</ToastAction>
+                  ),
+                });
+                e.preventDefault();
+              }
+            }}
           >
+            <Toaster />
             Dashboard
           </Link>
           <Link
             href="/problems"
             className="text-muted-foreground transition-colors hover:text-foreground"
+            onClick={(e) => {
+              if (!session) {
+                toast({
+                  variant: "destructive",
+                  title: "You need to be logged in",
+                  action: (
+                    <ToastAction altText="Try again">Try again</ToastAction>
+                  ),
+                });
+                e.preventDefault();
+              }
+            }}
           >
+            <Toaster />
             Problems
           </Link>
         </nav>
