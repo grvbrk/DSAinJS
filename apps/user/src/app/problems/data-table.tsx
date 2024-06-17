@@ -21,7 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ProblemType } from "@repo/common";
+import { ProblemType } from "@repo/common/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -49,7 +49,6 @@ export function DataTable<TData, TValue>({
   function handleRowClick(problemId: string) {
     router.push(`/problems/${problemId}`);
   }
-
   return (
     <>
       <div className="rounded-md border">
@@ -77,19 +76,12 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() => handleRowClick(row.getValue("name"))}
+                    className="hover:cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => {
-                      let problemId = "";
-                      if (typeof cell.getValue() === "object") {
-                        const problem = cell.getValue() as ProblemType;
-                        problemId = problem.problem_title?.replaceAll(" ", "-");
-                      }
                       return (
-                        <TableCell
-                          key={cell.id}
-                          onClick={() => handleRowClick(problemId as string)}
-                          className={`${cell.column.id === "problem" && "cursor-pointer"} px-4`}
-                        >
+                        <TableCell key={cell.id} className="px-4">
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()

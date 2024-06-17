@@ -30,11 +30,6 @@ export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
     }
   }
 
-  function getProblem() {}
-  function getProblemTestcases() {
-    const testCases = {};
-  }
-
   async function handleProblemSubmit() {
     try {
       const response = await axios.post(

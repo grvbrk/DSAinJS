@@ -4,7 +4,6 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import CodeEditor from "./CodeEditor";
-import { problemsArray } from "@repo/common";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -17,24 +16,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BookOpen, Code, NotebookText } from "lucide-react";
 import TestCaseBlock from "./_components/TestCaseBlock";
+import { getProblemByName } from "@/app/actions/problems";
+import { getTestcases } from "@/app/actions/testcases";
 
 export const dynamic = "force-dynamic";
-
-function getProblemById(problemId: string) {
-  return problemsArray[0];
-}
-
-function getProblemTestcases(problemId: string) {
-  return problemsArray[0].testcases;
-}
-
-export default function page({
-  params: { problemId },
+export default async function page({
+  params: { problemName },
 }: {
-  params: { problemId: string };
+  params: { problemName: string };
 }) {
-  const problem = getProblemById(problemId);
-  const testcases = getProblemTestcases(problemId);
+  const problem = await getProblemByName(problemName);
+  const testcases = await getTestcases(problemName);
+  const placeholderCode =
+    "function pairProduct(numbers, targetProduct){\n\t// todo\n};";
 
   return (
     <>
@@ -65,28 +59,25 @@ export default function page({
               <TabsContent value="problem">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="pb-2">
-                      {problem.problem.problem_title}
-                    </CardTitle>
-                    <CardDescription>
-                      {problem.problem.problem_desc}
-                    </CardDescription>
-                    {problem.problem.problem_caution && (
+                    <CardTitle className="pb-2">{problem?.name}</CardTitle>
+                    <CardDescription>{problem?.description}</CardDescription>
+                    {/* {problem.caution && (
                       <CardDescription>
                         NOTE: {problem.problem.problem_caution}
                       </CardDescription>
-                    )}
+                    )} */}
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    {testcases.map((testcase) => {
-                      return (
-                        <TestCaseBlock
-                          key={testcase.testcase_id}
-                          testcase={testcase}
-                          status={testcase.testcase_status}
-                        />
-                      );
-                    })}
+                    {testcases &&
+                      testcases.map((testcase, index) => {
+                        return (
+                          <TestCaseBlock
+                            key={testcase.id}
+                            testcase={testcase}
+                            index={index + 1}
+                          />
+                        );
+                      })}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -137,7 +128,7 @@ export default function page({
         </ResizablePanel>
         <ResizableHandle className="w-1 bg-muted hover:bg-muted-foreground" />
         <ResizablePanel minSize={20}>
-          <CodeEditor placeholderCode={problem.placeholderCode} />
+          <CodeEditor placeholderCode={placeholderCode} />
         </ResizablePanel>
       </ResizablePanelGroup>
     </>
