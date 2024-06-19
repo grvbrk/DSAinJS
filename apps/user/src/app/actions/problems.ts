@@ -2,15 +2,13 @@
 
 import { connectDB } from "@repo/db/connection";
 import { pool } from "@repo/db";
-import {
-  ProblemArrayType,
-  ProblemType,
-  TestcaseType,
-} from "@repo/common/types";
+import { ProblemType } from "@repo/common/types";
 import { QueryResult } from "pg";
+import { cache } from "react";
+import { formatProblemArrayType } from "../problems/page";
 
-export async function getAllProblems() {
-  connectDB();
+export const getAllProblems = cache(async () => {
+  await connectDB();
   try {
     const problemsData = (await pool.query(
       `
@@ -25,16 +23,15 @@ export async function getAllProblems() {
         FROM testcases AS t
         JOIN problems AS p ON t.problemId = p.id
         `
-    )) as QueryResult<ProblemArrayType>;
-    const problems = problemsData?.rows;
-    return problems;
+    )) as QueryResult<formatProblemArrayType>;
+    return problemsData?.rows;
   } catch (error) {
     console.log("ERROR FETCHING ALL PROBLEMS", error);
   }
-}
+});
 
-export async function getProblemById(problemId: string) {
-  connectDB();
+export const getProblemById = cache(async (problemId: string) => {
+  await connectDB();
   try {
     const problemsData = (await pool.query(
       `
@@ -48,10 +45,10 @@ export async function getProblemById(problemId: string) {
   } catch (error) {
     console.log("ERROR FETCHING ONE PROBLEM", error);
   }
-}
+});
 
-export async function getProblemByName(name: string) {
-  connectDB();
+export const getProblemByName = cache(async (name: string) => {
+  await connectDB();
   try {
     const problemData = (await pool.query(
       `
@@ -59,9 +56,8 @@ export async function getProblemByName(name: string) {
     `,
       [name]
     )) as QueryResult<ProblemType>;
-    console.log(problemData);
     return problemData.rows[0];
   } catch (error) {
     console.log("ERROR FETCHING PROBLEM BY NAME ", error);
   }
-}
+});

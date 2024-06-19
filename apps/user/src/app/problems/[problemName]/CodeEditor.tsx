@@ -7,12 +7,15 @@ import { Send } from "lucide-react";
 import { editor } from "monaco-editor";
 import { useRef, useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 type CodeEditorPropsType = {
   placeholderCode: string;
 };
 
 export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
+  const { data: session } = useSession();
   const [value, setValue] = useState<string>("");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const [submissions, setSubmissions] = useState<Record<string, []>>({
@@ -47,7 +50,6 @@ export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
           const res = await axios.get(
             `${process.env.NEXT_PUBLIC_JUDGE0_URL}/submissions/${token}?base64_encoded=false`
           );
-          console.log(res);
         } catch (error) {
           console.log("Error fetching submission with token", error);
         }
@@ -59,7 +61,7 @@ export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-4 mt-2">
         <Card className="relative">
           <Editor
             className="rounded-xl overflow-hidden"
@@ -87,10 +89,27 @@ export default function CodeEditor({ placeholderCode }: CodeEditorPropsType) {
             size="lg"
             className="border border-black"
             type="submit"
+            onClick={(e) => {
+              handleProblemSubmit();
+              if (!session) {
+                toast.error("You need to login first");
+                e.preventDefault();
+              }
+            }}
           >
             Run
           </Button>
-          <Button size="lg" type="submit" onClick={handleProblemSubmit}>
+          <Button
+            size="lg"
+            type="submit"
+            onClick={(e) => {
+              handleProblemSubmit();
+              if (!session) {
+                toast.error("You need to login first");
+                e.preventDefault();
+              }
+            }}
+          >
             Submit
             <Send className="ml-2" size="14" />
           </Button>

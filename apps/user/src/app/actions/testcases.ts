@@ -1,3 +1,5 @@
+"use server";
+
 import { QueryResult } from "pg";
 import { TestcaseType } from "@repo/common/types";
 import { pool } from "@repo/db";

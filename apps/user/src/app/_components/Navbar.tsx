@@ -21,9 +21,6 @@ import Link from "next/link";
 import { CircleUser, LogIn, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { BuiltInProviderType } from "next-auth/providers/index";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@radix-ui/react-toast";
-import { Toaster } from "@/components/ui/toaster";
 
 type ProvidersResponse = Record<
   LiteralUnion<BuiltInProviderType, string>,
@@ -31,7 +28,6 @@ type ProvidersResponse = Record<
 >;
 
 export default function Navbar() {
-  const { toast } = useToast();
   const { data: session } = useSession();
   const [providers, setProviders] = useState<ProvidersResponse | null>(null);
 
@@ -47,53 +43,29 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-10 md:text-sm lg:gap-16">
+        <nav className="pl-2 md:pl-4 flex-col gap-8 text-sm md:flex md:flex-row md:items-center md:gap-10 md:text-sm lg:gap-16">
           <Link
             href="/"
             className="font-bold transition-colors hover:text-foreground"
           >
             Async0
           </Link>
-          <Link
-            href="/dashboard"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-            onClick={(e) => {
-              if (!session) {
-                toast({
-                  variant: "destructive",
-                  title: "You need to be logged in",
-                  action: (
-                    <ToastAction altText="Try again">Try again</ToastAction>
-                  ),
-                });
-                e.preventDefault();
-              }
-            }}
-          >
-            <Toaster />
-            Dashboard
-          </Link>
+
           <Link
             href="/problems"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-            onClick={(e) => {
-              if (!session) {
-                toast({
-                  variant: "destructive",
-                  title: "You need to be logged in",
-                  action: (
-                    <ToastAction altText="Try again">Try again</ToastAction>
-                  ),
-                });
-                e.preventDefault();
-              }
-            }}
+            className="hidden md:block text-muted-foreground transition-colors hover:text-foreground"
           >
-            <Toaster />
             Problems
           </Link>
+
+          <Link
+            href="/neetcode"
+            className="hidden md:block text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Neetcode 150
+          </Link>
         </nav>
-        <form className="ml-auto flex-1 sm:flex-initial">
+        <form className=" ml-auto flex-1 sm:flex-initial">
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -128,7 +100,7 @@ export default function Navbar() {
             return (
               <Button key={idx} onClick={() => signIn(provider.id)}>
                 <LogIn size="16" className="mr-2" />
-                Sign up
+                Sign in
               </Button>
             );
           })

@@ -3,7 +3,7 @@ import { getAllProblems } from "../actions/problems";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-type formatProblemArrayType = {
+export type formatProblemArrayType = {
   name: string;
   problemid: string;
   testcaseid: string;
@@ -61,7 +61,6 @@ export default async function ProblemsPage() {
   const formattedProblemsData = formatProblemsData(
     problems
   ) as problemDataType[];
-  // console.log(formattedProblemsData);
   return (
     <>
       <div className="container mx-auto py-10">

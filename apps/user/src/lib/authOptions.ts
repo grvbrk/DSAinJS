@@ -36,7 +36,6 @@ export const authOptions = {
     },
   },
   pages: {
-    signin: "/problems",
-    error: "/test",
+    signIn: "/test",
   },
 };

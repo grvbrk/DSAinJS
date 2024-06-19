@@ -1,13 +1,15 @@
+import { getAllTopics } from "../actions/topics";
 import ProblemNavbar from "./_components/ProblemNavbar";
 
-export default function ProblemsLayout({
+export default async function ProblemsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const topics = await getAllTopics();
   return (
     <>
-      <ProblemNavbar />
+      <ProblemNavbar topics={topics || []} />
       {children}
     </>
   );
