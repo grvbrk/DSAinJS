@@ -4,8 +4,9 @@ import { QueryResult } from "pg";
 import { connectDB } from "@repo/db/connection";
 import { pool } from "@repo/db";
 import { UserType } from "@repo/common/types";
+import { cache } from "react";
 
-export async function findUser(email: string) {
+export const findUser = cache(async (email: string) => {
   try {
     connectDB();
     const userArray = (await pool.query(
@@ -18,9 +19,9 @@ export async function findUser(email: string) {
   } catch (error) {
     return undefined;
   }
-}
+});
 
-export async function addUser(email: string) {
+export const addUser = cache(async (email: string) => {
   try {
     connectDB();
     await pool.query(
@@ -33,4 +34,4 @@ export async function addUser(email: string) {
   } catch (error) {
     console.log("Error adding user");
   }
-}
+});

@@ -1,45 +1,44 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { findUser } from "./users";
-import { getServerSession } from "next-auth";
 import { connectDB } from "@repo/db/connection";
 import { pool } from "@repo/db";
+import {
+  ProblemArrayType,
+  ProblemType,
+  TestcaseType,
+} from "@repo/common/types";
+import { QueryResult } from "pg";
+import { cache } from "react";
 
-export async function AddProblem(formData: FormData) {
-  const session = await getServerSession();
-  const data = Object.fromEntries(formData.entries());
-  const testcases = [];
-
-  for (let key in data) {
-    if (key.startsWith("input")) {
-      const id = Number(key.split("-")[1]);
-      testcases.push({
-        input: data[key],
-        output: data[`output-${id}`],
-      });
-      delete data[key];
-    }
-    if (key.startsWith("output")) {
-      delete data[key];
-    }
+export const addProblem = cache(async (name: string, description: string) => {
+  connectDB();
+  try {
+    const problemData = (await pool.query(
+      `
+      INSERT INTO problems(name, description)
+      VALUES ($1, $2)
+      RETURNING *
+    `,
+      [name, description]
+    )) as QueryResult<ProblemType>;
+    return problemData?.rows[0];
+  } catch (error) {
+    console.log("ERROR SUBMITTING PROBLEM TO DB", error);
   }
+});
 
-  console.log(session);
+export const getAllProblems = cache(async () => {
+  connectDB();
+  try {
+    const problemsData = (await pool.query(
+      `
+        SELECT * FROM problems
+      `
+    )) as QueryResult<ProblemType>;
 
-  // try {
-  //   connectDB();
-  //   await pool.query(
-  //     `
-  //     INSERT INTO testcase (description, solution, userId, problemId)
-  //     VALUES ($1, $2, $3, $4)
-  //   `,
-  //     [testcases[0].input, testcases[0].output, session?.user?.id]
-  //   );
-  //   console.log("Testcase added successfully!");
-  // } catch (error) {
-  //   console.log("Error writing testcases to DB");
-  // }
-
-  // redirect("/problems");
-}
+    const problems = problemsData?.rows;
+    return problems;
+  } catch (error) {
+    console.log("ERROR FETCHING ALL PROBLEMS");
+  }
+});
