@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  submissions Submission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+}
+
+model Problem {
+  id                    String       @id @default(uuid())
+  name                  String
+  description           String
+  difficulty            Difficulty   @default(NA)
+  submissions           Submission[]
+  testcases             Testcase[]
+  isActiveForSubmission Boolean      @default(true)
+  topics                Topic[]
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @default(now()) @updatedAt
+}
+
+model Submission {
+  id        String   @id @default(uuid())
+  status    Status   @default(Pending)
+  User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  Problem   Problem? @relation(fields: [problemId], references: [id])
+  problemId String?
+}
+
+model Testcase {
+  id          String           @id @default(uuid())
+  description String
+  solution    String
+  status      TestcaseStatus[]
+  Problem     Problem?         @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problemId   String?
+}
+
+model TestcaseStatus {
+  id         String    @id @default(uuid())
+  status     Status    @default(Pending)
+  Testcase   Testcase? @relation(fields: [testcaseId], references: [id])
+  testcaseId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+}
+
+enum Status {
+  Accepted
+  Rejected
+  Pending
+  TimeLimit
+}
+
+enum Difficulty {
+  Easy
+  Medium
+  Hard
+  NA
+}
+
+model Topic {
+  id      String    @id @default(uuid())
+  name    String
+  problem Problem[]
+}
+
+model List {
+  id   String       @id @default(uuid())
+  name PopularLists @default(Common)
+}
+
+enum PopularLists {
+  Common
+  Neetcode
+  Blind75
+  Structy
+  Striver
+}
