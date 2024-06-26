@@ -9,7 +9,7 @@ export const getAllLists = cache(async () => {
   try {
     const listsData = (await pool.query(
       `
-        SELECT * FROM lists
+        SELECT * FROM "List"
       `
     )) as QueryResult<ListType>;
 

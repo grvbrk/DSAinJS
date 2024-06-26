@@ -1,12 +1,7 @@
 "use server";
 
 import { connectDB } from "@repo/db/connection";
-import { pool } from "@repo/db";
-import {
-  ProblemArrayType,
-  ProblemType,
-  TestcaseType,
-} from "@repo/common/types";
+import { Problem, pool } from "@repo/db";
 import { QueryResult } from "pg";
 import { cache } from "react";
 
@@ -20,7 +15,7 @@ export const addProblem = cache(async (name: string, description: string) => {
       RETURNING *
     `,
       [name, description]
-    )) as QueryResult<ProblemType>;
+    )) as QueryResult<Problem>;
     return problemData?.rows[0];
   } catch (error) {
     console.log("ERROR SUBMITTING PROBLEM TO DB", error);
@@ -34,7 +29,7 @@ export const getAllProblems = cache(async () => {
       `
         SELECT * FROM problems
       `
-    )) as QueryResult<ProblemType>;
+    )) as QueryResult<Problem>;
 
     const problems = problemsData?.rows;
     return problems;

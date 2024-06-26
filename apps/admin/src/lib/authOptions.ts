@@ -1,9 +1,5 @@
 import { addUser, findUser } from "@/actions/users";
-import { UserType } from "@repo/common/types";
-import { pool } from "@repo/db";
-import { connectDB } from "@repo/db/connection";
 import GoogleProvider from "next-auth/providers/google";
-import { redirect } from "next/navigation";
 
 export const authOptions = {
   providers: [
@@ -22,10 +18,6 @@ export const authOptions = {
   callbacks: {
     // This callback will be invoked on successful signin by user
     async signIn({ profile }: any) {
-      // 1. Connect DB
-      // 2. Check if user exists
-      // 2.1. If not, add user to DB
-      // 3. Return 'true' to allow sign in
       const adminEmail = process.env.NEXTAUTH_ADMIN_EMAIL;
       if (adminEmail != profile.email) {
         return false;
@@ -41,10 +33,7 @@ export const authOptions = {
     },
 
     // This callback will modify the session object.
-    async session({ session }: any) {
-      // 1. Get user from DB
-      // 2. Assign the user's id to the session (So that it is available throughout the app)
-      // 3. Return session
+    async session({ session, token }: any) {
       const user = await findUser(session.user.email);
       session.user.id = user?.id;
       session.user.foo = "bar";

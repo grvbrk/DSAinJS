@@ -29,8 +29,10 @@ export async function handleProblemFormData(formData: FormData) {
     }
   }
 
-  const problem = await addProblem(String(data.name), String(data.description));
-  await addTestcases(testcases, problem?.id as string);
+  console.log(formData)
+
+  // const problem = await addProblem(String(data.name), String(data.description));
+  // await addTestcases(testcases, problem?.id as string);
 
   console.log("TESTCASE AND PROBLEM ADDED TO DB");
   // redirect("/problems");

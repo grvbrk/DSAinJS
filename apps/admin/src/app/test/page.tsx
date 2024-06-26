@@ -1,7 +1,7 @@
-import { connectDB } from "@repo/db/connection";
-import React from "react";
+"use client";
 
-export default function page() {
-  connectDB();
-  return <div>TEST</div>;
+import TestMDX from "./test.mdx";
+
+export default function TestPage() {
+  return <TestMDX />;
 }
