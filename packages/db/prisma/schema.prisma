@@ -24,6 +24,7 @@ model Problem {
   testcases             Testcase[]
   isActiveForSubmission Boolean      @default(true)
   topics                Topic[]
+  List                  List[]
   createdAt             DateTime     @default(now())
   updatedAt             DateTime     @default(now()) @updatedAt
 }
@@ -49,7 +50,7 @@ model Testcase {
 model TestcaseStatus {
   id         String    @id @default(uuid())
   status     Status    @default(Pending)
-  Testcase   Testcase? @relation(fields: [testcaseId], references: [id])
+  Testcase   Testcase? @relation(fields: [testcaseId], references: [id], onDelete: Cascade)
   testcaseId String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt
@@ -73,11 +74,15 @@ model Topic {
   id      String    @id @default(uuid())
   name    String
   problem Problem[]
+  List    List?     @relation(fields: [listId], references: [id], onDelete: Restrict)
+  listId  String?
 }
 
 model List {
-  id   String       @id @default(uuid())
-  name PopularLists @default(Common)
+  id      String       @id @default(uuid())
+  name    PopularLists @default(Common)
+  problem Problem[]
+  topic   Topic[]
 }
 
 enum PopularLists {

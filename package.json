@@ -1,5 +1,5 @@
 {
-  "name": "DSAinJs",
+  "name": "Async0",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -10,8 +10,9 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "eslint": "^8.57.0",
     "prettier": "^3.2.5",
-    "turbo": "latest"
+    "turbo": "^2.0.3"
   },
   "engines": {
     "node": ">=18"

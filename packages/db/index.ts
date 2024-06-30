@@ -18,3 +18,4 @@ class Pool {
 }
 
 export const pool = new Pool();
+export * from "@prisma/client";

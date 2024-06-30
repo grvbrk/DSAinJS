@@ -36,3 +36,11 @@ export type UserType = {
 export type TopicType = {
   name: string;
 };
+
+export type NeetcodeTopicType = {
+  name: string;
+};
+
+export type ListType = {
+  name: string;
+};
