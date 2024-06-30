@@ -1,15 +1,24 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx,md,mdx}",
+    "./components/**/*.{ts,tsx,md,mdx}",
+    "./app/**/*.{ts,tsx,md,mdx}",
+    "./src/**/*.{ts,tsx,md,mdx}",
+    "./mdx-components.tsx",
+  ],
   prefix: "",
+  safelist: [
+    {
+      pattern: /hljs+/,
+    },
+  ],
   theme: {
+    hljs: {
+      theme: "atom-one-dark",
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -74,7 +83,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
+  plugins: [require("tailwindcss-animate"), require("tailwind-highlightjs")],
+} satisfies Config;
 
-export default config
+export default config;
