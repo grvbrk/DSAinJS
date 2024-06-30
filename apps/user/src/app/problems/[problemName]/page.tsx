@@ -32,10 +32,7 @@ export default async function page({
 
   return (
     <>
-      <ResizablePanelGroup
-        direction="horizontal"
-        className="grid grid-cols-2 border-2 border-green-600"
-      >
+      <ResizablePanelGroup direction="horizontal" className="grid grid-cols-2">
         <ResizablePanel defaultSize={45} minSize={25}>
           <Tabs defaultValue="problem" className="p-4">
             <TabsList className="flex justify-around w-full bg-transparent">

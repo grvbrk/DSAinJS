@@ -3,6 +3,7 @@ import AuthProvider from "@/components/AuthProvider";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import Navbar from "./_components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body className={inter.className}>
+          <Navbar />
           {children}
           <Toaster richColors />
         </body>

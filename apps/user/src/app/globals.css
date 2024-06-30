@@ -75,13 +75,6 @@
   }
 }
 
-@layer components {
-  .hide-scrollbar {
-    @apply overflow-hidden;
-
-    &::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-    }
-  }
+body {
+  overflow-y: hidden;
 }
