@@ -1,20 +1,13 @@
 import { getAllLists } from "@/actions/lists";
 import AddProblemForm from "./_components/AddProblemForm";
 import { Separator } from "@/components/ui/separator";
-import { getAllTopics, getNeetcodeTopics } from "@/actions/topics";
+import { getAllTopics } from "@/actions/topics";
 
 export default async function NewProblemPage() {
   const listsPromise = getAllLists();
   const topicsPromise = getAllTopics();
-  const neetcodetopicsPromise = getNeetcodeTopics();
 
-  const [lists, topics, neetcodetopics] = await Promise.all([
-    listsPromise,
-    topicsPromise,
-    neetcodetopicsPromise,
-  ]);
-
-  console.log(lists);
+  const [lists, topics] = await Promise.all([listsPromise, topicsPromise]);
 
   return (
     <>
@@ -29,7 +22,6 @@ export default async function NewProblemPage() {
       <AddProblemForm
         lists={lists}
         topics={topics}
-        neetcodetopics={neetcodetopics}
       />
     </>
   );

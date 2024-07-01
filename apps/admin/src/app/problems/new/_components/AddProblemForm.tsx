@@ -3,7 +3,6 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -12,10 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormStatus } from "react-dom";
-import { useState } from "react";
-import { CirclePlus, X } from "lucide-react";
+import { ButtonHTMLAttributes, useState } from "react";
 import { handleProblemFormData } from "@/actions/handleFormData";
-import { ListType, NeetcodeTopicType, TopicType } from "@repo/common/types";
+import { ListType, TopicType } from "@repo/common/types";
 import { DIFFICULTY } from "@/lib/constant";
 
 type TestCase = {
@@ -23,71 +21,49 @@ type TestCase = {
   output: string;
 };
 
-type TestCaseField = keyof TestCase;
+// type TestCaseField = keyof TestCase;
 
 type AddProblemPropsType = {
   lists: ListType[] | undefined;
   topics: TopicType[] | undefined;
-  neetcodetopics: NeetcodeTopicType[] | undefined;
 };
 
-export default function AddProblemForm({
-  lists,
-  topics,
-  neetcodetopics,
-}: AddProblemPropsType) {
-  const [testCases, setTestCases] = useState<TestCase[]>([
-    { input: "", output: "" },
-  ]);
+export default function AddProblemForm({ lists, topics }: AddProblemPropsType) {
+  // const [testCases, setTestCases] = useState<TestCase[]>([
+  //   { input: "", output: "" },
+  // ]);
 
   const [selectedLevel, setSelectedLevel] = useState<string>("");
-
   const [selectedList, setSelectedList] = useState<string>("");
   const [selectedTopic, setSelectedTopic] = useState<string>("");
-  const [selectedNeetcodeTopic, setSelectedNeetcodeTopic] =
-    useState<string>("");
 
-  function handleTestCaseChange(
-    idx: number,
-    field: TestCaseField,
-    value: string
-  ) {
-    const updatedTestCases = [...testCases];
-    updatedTestCases[idx][field] = value;
-    setTestCases(updatedTestCases);
-  }
+  // function handleTestCaseChange(
+  //   idx: number,
+  //   field: TestCaseField,
+  //   value: string
+  // ) {
+  //   const updatedTestCases = [...testCases];
+  //   updatedTestCases[idx][field] = value;
+  //   setTestCases(updatedTestCases);
+  // }
 
-  function addTestCase() {
-    setTestCases([...testCases, { input: "", output: "" }]);
-  }
+  // function addTestCase() {
+  //   setTestCases([...testCases, { input: "", output: "" }]);
+  // }
 
-  function removeTestCase(idx: number) {
-    setTestCases(testCases.filter((_, i) => i !== idx));
-  }
+  // function removeTestCase(idx: number) {
+  //   setTestCases(testCases.filter((_, i) => i !== idx));
+  // }
 
   return (
-    <form action={handleProblemFormData} className="space-y-8">
-      <div className="space-y-2 flex items-end gap-4 md:flex  md:items-end ">
+    <form action={handleProblemFormData}>
+      <div className="flex items-end gap-4 mb-2 md:flex md:items-end">
         <div className="md:w-full md:min-w-[100px]">
           <Label htmlFor="name">Problem Name</Label>
           <Input type="text" id="name" name="name" required />
         </div>
-        <Select onValueChange={setSelectedLevel} value={selectedLevel}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Difficulty" />
-          </SelectTrigger>
-          <SelectContent>
-            {DIFFICULTY.map((level, idx) => {
-              return (
-                <SelectItem key={idx} value={level}>
-                  {level}
-                </SelectItem>
-              );
-            })}
-          </SelectContent>
-        </Select>
       </div>
-      <div className="flex justify-between gap-4 md:justify-start ">
+      <div className="flex justify-between gap-4 md:justify-start">
         <Select onValueChange={setSelectedList} value={selectedList}>
           <SelectTrigger
             className="w-[180px]"
@@ -123,34 +99,27 @@ export default function AddProblemForm({
           </SelectContent>
         </Select>
 
-        <Select
-          onValueChange={setSelectedNeetcodeTopic}
-          value={selectedNeetcodeTopic}
-        >
-          <SelectTrigger
-            className="w-[180px]"
-            disabled={neetcodetopics?.length ? false : true}
-          >
-            <SelectValue placeholder="Neetcode Topics" />
+        <Select onValueChange={setSelectedLevel} value={selectedLevel}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Difficulty" />
           </SelectTrigger>
           <SelectContent>
-            {neetcodetopics &&
-              neetcodetopics.map((topic, idx) => {
-                return (
-                  <SelectItem key={`$topic-${idx}`} value={topic.name}>
-                    {topic.name}
-                  </SelectItem>
-                );
-              })}
+            {DIFFICULTY.map((level, idx) => {
+              return (
+                <SelectItem key={idx} value={level}>
+                  {level}
+                </SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
       </div>
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <Label htmlFor="description">Problem Description</Label>
         <Textarea id="description" name="description" required rows={8} />
-      </div>
+      </div> */}
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <Label htmlFor="Description">Testcases</Label>
         {testCases.map((testcase, idx) => {
           return (
@@ -202,27 +171,21 @@ export default function AddProblemForm({
           <CirclePlus className="mr-2" />
           Add Testcase
         </Button>
-      </div>
+      </div> */}
 
+      <SubmitButton className="mt-6" />
       <input type="hidden" name="difficulty" value={selectedLevel} />
       <input type="hidden" name="list" value={selectedList} />
       <input type="hidden" name="topics" value={selectedTopic} />
-      <input
-        type="hidden"
-        name="neetcodeTopics"
-        value={selectedNeetcodeTopic}
-      />
-
-      <SubmitButton />
     </form>
   );
 }
 
-function SubmitButton() {
+function SubmitButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { pending } = useFormStatus();
 
   return (
-    <Button type="submit" disabled={pending}>
+    <Button type="submit" disabled={pending} {...props}>
       {pending ? "Saving..." : "Save"}
     </Button>
   );

@@ -9,7 +9,7 @@ export const getAllTopics = cache(async () => {
   try {
     const topicsData = (await pool.query(
       `
-        SELECT * FROM topics
+        SELECT * FROM "Topic"
       `
     )) as QueryResult<TopicType>;
 
